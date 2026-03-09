@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Heart, Pill, Calendar } from 'lucide-react-native';
 
 const healthMetrics = [
@@ -35,7 +35,11 @@ const healthMetrics = [
     },
 ];
 
+
+import { useRouter } from 'expo-router';
+
 export const HealthSummary: React.FC = () => {
+    const router = useRouter();
     return (
         <View className="mb-6">
             <View className="flex-row items-center justify-between mb-4 px-1">
@@ -46,8 +50,19 @@ export const HealthSummary: React.FC = () => {
             <View className="flex-row justify-between gap-3">
                 {healthMetrics.map((metric, idx) => {
                     const Icon = metric.icon;
+                    // Determine route based on label
+                    let route = undefined;
+                    if (metric.label === 'Medicines') route = '/medicines';
+                    if (metric.label === 'Appointments') route = '/appointments';
+
+                    const Wrapper = route ? TouchableOpacity : View;
+
                     return (
-                        <View key={idx} className={`bg-white border ${metric.border || 'border-gray-200'} rounded-2xl p-3 flex-1 shadow-sm`}>
+                        <Wrapper
+                            key={idx}
+                            onPress={route ? () => router.push(route as any) : undefined}
+                            className={`bg-white border ${metric.border || 'border-gray-200'} rounded-2xl p-3 flex-1 shadow-sm`}
+                        >
                             <View className={`w-10 h-10 ${metric.bg} rounded-xl items-center justify-center mb-3`}>
                                 <Icon size={20} className={metric.color} style={{ color: metric.color.replace('text-', '').replace('-600', '') === 'rose' ? '#E11D48' : metric.color.replace('text-', '').replace('-600', '') === 'blue' ? '#2563EB' : '#4F46E5' } as any} color={metric.color.includes('rose') ? '#E11D48' : metric.color.includes('blue') ? '#2563EB' : '#4F46E5'} />
                             </View>
@@ -57,7 +72,7 @@ export const HealthSummary: React.FC = () => {
                                 <Text className="text-[10px] text-gray-500">{metric.unit}</Text>
                             </View>
                             <Text className="text-[10px] text-gray-400 font-medium">{metric.trend}</Text>
-                        </View>
+                        </Wrapper>
                     );
                 })}
             </View>
