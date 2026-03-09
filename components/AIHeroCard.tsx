@@ -36,7 +36,7 @@ export const AIHeroCard: React.FC<AIHeroCardProps> = ({ onPressMic }) => {
                                 <Text className="text-[10px] text-white font-medium">Online</Text>
                             </View>
                         </View>
-                        <Text className="text-blue-100 text-sm">Hi Rahul! How can I help with your health today?</Text>
+                        <Text className="text-blue-100 text-sm">Hi Gunjan! How can I help with your health today?</Text>
                     </View>
                 </View>
 
